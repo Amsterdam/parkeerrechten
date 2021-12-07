@@ -1,0 +1,14 @@
+#python
+*.pyc
+__pycache__
+.tox/
+.env
+.vscode
+fixtures/dump.yaml
+
+#docker
+docker-compose.override.yml
+
+# Coverage
+.coverage
+htmlcov
