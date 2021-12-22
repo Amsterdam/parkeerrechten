@@ -1,0 +1,44 @@
+version: "3.5"
+
+x-app: &base-app
+  build:
+    context: .
+    target: app
+  depends_on:
+    - database
+  volumes:
+    - ./src:/app/src
+    - ./tests:/app/tests
+    - ./deploy:/app/deploy
+  entrypoint: /app/deploy/wait-for-it.sh database:5432 --
+
+
+services:
+  database:
+    image: amsterdam/postgres11
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+
+  dev:
+    <<: *base-app
+    build:
+      context: .
+      target: dev
+
+  app:
+    <<: *base-app
+    build:
+      context: .
+      target: app
+      args:
+        - BUILD_DATE
+        - BUILD_REVISION
+        - BUILD_VERSION
+
+  test:
+    <<: *base-app
+    build:
+      context: .
+      target: tests

@@ -1,0 +1,20 @@
+# Define all DEV requirements, only pin when necessary
+# (and if so, add a comment explaining why).
+#
+# These requirements are compiled using `make requirements` and
+# stored with a pinned version in requirements_dev.txt
+
+# Base requirements
+-r ./requirements.txt
+
+# Tools for maintaining requirements.txt:
+pip-tools
+
+# Testing
+pytest
+pytest-cov
+black
+isort
+
+# Debugging
+ipdb
