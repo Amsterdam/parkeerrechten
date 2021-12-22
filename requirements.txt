@@ -4,3 +4,11 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
+greenlet==1.1.2
+    # via sqlalchemy
+psycopg2==2.9.2
+    # via -r requirements.in
+pymssql==2.2.3
+    # via -r requirements.in
+sqlalchemy==1.4.28
+    # via -r requirements.in

@@ -20,6 +20,10 @@ decorator==5.1.0
     # via
     #   ipdb
     #   ipython
+greenlet==1.1.2
+    # via
+    #   -r ./requirements.txt
+    #   sqlalchemy
 iniconfig==1.1.1
     # via pytest
 ipdb==0.13.9
@@ -52,14 +56,18 @@ platformdirs==2.4.0
     # via black
 pluggy==1.0.0
     # via pytest
-prompt-toolkit==3.0.23
+prompt-toolkit==3.0.24
     # via ipython
+psycopg2==2.9.2
+    # via -r ./requirements.txt
 ptyprocess==0.7.0
     # via pexpect
 py==1.11.0
     # via pytest
 pygments==2.10.0
     # via ipython
+pymssql==2.2.3
+    # via -r ./requirements.txt
 pyparsing==3.0.6
     # via packaging
 pytest==6.2.5
@@ -68,11 +76,13 @@ pytest==6.2.5
     #   pytest-cov
 pytest-cov==3.0.0
     # via -r requirements_dev.in
+sqlalchemy==1.4.28
+    # via -r ./requirements.txt
 toml==0.10.2
     # via
     #   ipdb
     #   pytest
-tomli==1.2.2
+tomli==1.2.3
     # via
     #   black
     #   coverage
@@ -85,7 +95,7 @@ typing-extensions==4.0.1
     # via black
 wcwidth==0.2.5
     # via prompt-toolkit
-wheel==0.37.0
+wheel==0.37.1
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
