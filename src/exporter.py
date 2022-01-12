@@ -21,7 +21,7 @@ class Exporter:
 
     def _run_export(self, batch_names):
         for batch_name in batch_names:
-            filename = f"{batch_name}_NPR_BACKUP.csv"
+            filename = f"{batch_name}{settings.BACKUP_FILE_POSTFIX}"
             self.local_db.export_batch_to_csv(filename, batch_name)
 
     def get_batch_names_for_export(self, start_date, end_date):
