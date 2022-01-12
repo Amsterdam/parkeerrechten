@@ -6,12 +6,20 @@ x-app: &base-app
     target: app
   depends_on:
     - database
+    - npr_database
+  environment:
+    NPR_DB_USER: sa
+    NPR_DB_PASSWORD: "DevDev123!"
+    NPR_DB_HOST: npr_database
+    NPR_DB_PORT: 1433
+    NPR_DB_NAME: master
+    NPR_DB_TABLE_NAME: npr_table
   volumes:
     - ./src:/app/src
     - ./tests:/app/tests
     - ./deploy:/app/deploy
-  entrypoint: /app/deploy/wait-for-it.sh database:5432 --
-
+    - ./data:/data
+  entrypoint: /app/deploy/docker-entrypoint.sh
 
 services:
   database:
@@ -20,6 +28,13 @@ services:
       POSTGRES_DB: dev
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: dev
+
+  npr_database:
+    image: 'mcr.microsoft.com/mssql/server'
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: "DevDev123!"
+      MSSQL_TCP_PORT: 1433
 
   dev:
     <<: *base-app

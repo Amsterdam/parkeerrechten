@@ -1,5 +1,9 @@
-FROM amsterdam/python:3.8-buster as app
+FROM amsterdam/python:3.9-buster as app
 MAINTAINER datapunt@amsterdam.nl
+
+RUN apt-get update \
+ && apt-get install --no-install-recommends -y freetds-dev \
+ && rm -rf /var/lib/apt/lists/* /var/cache/debconf/*-old
 
 WORKDIR /app/install
 COPY requirements.txt requirements.txt
@@ -10,6 +14,10 @@ COPY deploy /app/deploy
 WORKDIR /app/src
 COPY src .
 COPY pyproject.toml /app
+
+# Prepare the mountpoint to be accessible by the datapunt user
+RUN mkdir /data
+RUN chown datapunt /data
 
 USER datapunt
 
