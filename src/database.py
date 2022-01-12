@@ -35,7 +35,7 @@ class Database:
         raise NotImplementedError()
 
     def get_table_name(self):
-        raise NotImplementedError()
+        return settings.NPR_DB_TABLE_NAME
 
     def get_num_rows(self):
         with self.session() as session:
@@ -88,9 +88,6 @@ class NPRDatabase(Database):
     def get_connection_url(self):
         return settings.NPR_DB_URL
 
-    def get_table_name(self):
-        return settings.NPR_DB_TABLE_NAME
-
     def get_backup_selection(self, batch_name):
         table = self.get_introspected_table()
         selection = (
@@ -138,9 +135,6 @@ class LocalDatabase(Database):
 
     def get_connection_url(self):
         return settings.LOCAL_DB_URL
-
-    def get_table_name(self):
-        return settings.NPR_DB_TABLE_NAME
 
     def backup_iterator(self, iterator):
         with self.session() as session:
