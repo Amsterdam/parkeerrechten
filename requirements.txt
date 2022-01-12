@@ -4,11 +4,115 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
+attrs==21.4.0
+    # via jsonschema
+certifi==2021.10.8
+    # via requests
+charset-normalizer==2.0.10
+    # via requests
+datapunt-config-loader==1.1.2
+    # via datapunt-objectstore
+datapunt-objectstore==2020.9.7
+    # via -r requirements.in
+debtcollector==2.3.0
+    # via
+    #   oslo.config
+    #   oslo.utils
+    #   python-keystoneclient
 greenlet==1.1.2
     # via sqlalchemy
-psycopg2==2.9.2
+idna==3.3
+    # via requests
+iso8601==1.0.2
+    # via
+    #   keystoneauth1
+    #   oslo.utils
+jsonschema==4.4.0
+    # via datapunt-config-loader
+keystoneauth1==4.4.0
+    # via python-keystoneclient
+msgpack==1.0.3
+    # via oslo.serialization
+netaddr==0.8.0
+    # via
+    #   oslo.config
+    #   oslo.utils
+netifaces==0.11.0
+    # via oslo.utils
+os-service-types==1.7.0
+    # via keystoneauth1
+oslo.config==8.7.1
+    # via python-keystoneclient
+oslo.i18n==5.1.0
+    # via
+    #   oslo.config
+    #   oslo.utils
+    #   python-keystoneclient
+oslo.serialization==4.2.0
+    # via python-keystoneclient
+oslo.utils==4.12.0
+    # via
+    #   oslo.serialization
+    #   python-keystoneclient
+packaging==21.3
+    # via oslo.utils
+pbr==5.8.0
+    # via
+    #   debtcollector
+    #   keystoneauth1
+    #   os-service-types
+    #   oslo.i18n
+    #   oslo.serialization
+    #   oslo.utils
+    #   python-keystoneclient
+    #   stevedore
+psycopg2==2.9.3
     # via -r requirements.in
 pymssql==2.2.3
     # via -r requirements.in
-sqlalchemy==1.4.28
+pyparsing==3.0.6
+    # via
+    #   oslo.utils
+    #   packaging
+pyrsistent==0.18.0
+    # via jsonschema
+python-dateutil==2.8.2
+    # via datapunt-objectstore
+python-keystoneclient==4.4.0
+    # via datapunt-objectstore
+python-swiftclient==3.13.0
+    # via datapunt-objectstore
+pytz==2021.3
+    # via
+    #   oslo.serialization
+    #   oslo.utils
+pyyaml==6.0
+    # via
+    #   datapunt-config-loader
+    #   oslo.config
+requests==2.27.1
+    # via
+    #   keystoneauth1
+    #   oslo.config
+    #   python-keystoneclient
+    #   python-swiftclient
+rfc3986==2.0.0
+    # via oslo.config
+six==1.16.0
+    # via
+    #   debtcollector
+    #   keystoneauth1
+    #   python-dateutil
+    #   python-keystoneclient
+    #   python-swiftclient
+sqlalchemy==1.4.29
     # via -r requirements.in
+stevedore==3.5.0
+    # via
+    #   keystoneauth1
+    #   oslo.config
+    #   python-keystoneclient
+urllib3==1.26.8
+    # via requests
+wrapt==1.13.3
+    # via debtcollector
