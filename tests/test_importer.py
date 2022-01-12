@@ -8,20 +8,20 @@ from models import NPRTable
 
 class TestImporter:
     @pytest.mark.parametrize(
-        "start_date_str,num_days,num_expected",
+        "start_date_str,end_date_str,num_expected",
         [
-            ("20170731", 1, 0),     # first day is 01/08 so no import
-            ("20170801", 0, 0),     # 0 if num days is zero
-            ("20170801", 1, 8),     # 8 on first day
-            ("20170825", 1, 2),     # 2 on last day
-            ("20170826", 1, 0),     # last day is 25/08 so no import
-            ("20170731", 365, 84),    # 84 in time window
+            ("20170731", "20170731", 0),     # first day is 01/08 so no import
+            ("20170801", "20170801", 8),     # 8 on first day
+            ("20170825", "20170825", 2),     # 2 on last day
+            ("20170826", "20170826", 0),     # last day is 25/08 so no import
+            ("20170731", "20170826", 84),    # 84 in time window
         ],
     )
-    def test_import_range(self, local_db, start_date_str, num_days, num_expected):
+    def test_import_range(self, local_db, start_date_str, end_date_str, num_expected):
         importer = Importer()
-        start_date = datetime.strptime(start_date_str, "%Y%m%d")
-        importer.import_range(start_date, num_days)
+        start_date = datetime.strptime(start_date_str, "%Y%m%d").date()
+        end_date = datetime.strptime(end_date_str, "%Y%m%d").date()
+        importer.import_range(start_date, end_date)
 
         with local_db.session() as session:
             num = session.query(NPRTable).count()

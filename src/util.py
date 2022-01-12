@@ -1,11 +1,9 @@
 import time
-from datetime import timedelta
 
 import settings
 
 
-def filter_batch_names(start_date, num_days_to_import, batch_names):
-    end_date = start_date + timedelta(days=num_days_to_import-1)
+def filter_batch_names(start_date, end_date, batch_names):
     end_date_str = end_date.strftime("%Y%m%d")
     start_date_str = start_date.strftime("%Y%m%d")
 
