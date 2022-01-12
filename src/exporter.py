@@ -15,8 +15,8 @@ class Exporter:
         batch_names = [settings.NPR_NULL_VALUE]
         self._run_export(batch_names)
 
-    def export_range(self, start_date, num_days_to_export):
-        batch_names = self.get_batch_names_for_export(start_date, num_days_to_export)
+    def export_range(self, start_date, end_date):
+        batch_names = self.get_batch_names_for_export(start_date, end_date)
         self._run_export(batch_names)
 
     def _run_export(self, batch_names):
@@ -24,8 +24,10 @@ class Exporter:
             filename = f"{batch_name}_NPR_BACKUP.csv"
             self.local_db.export_batch_to_csv(filename, batch_name)
 
-    def get_batch_names_for_export(self, start_date, num_days_to_export):
+    def get_batch_names_for_export(self, start_date, end_date):
+        num_days = (end_date - start_date).days + 1
         batch_names = [
-            (start_date + timedelta(days=days)).strftime("%Y%m%d") for days in range(num_days_to_export)
+            (start_date + timedelta(days=days)).strftime("%Y%m%d")
+            for days in range(num_days)
         ]
         return batch_names
