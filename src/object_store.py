@@ -1,8 +1,12 @@
+import logging
+
 from objectstore import objectstore
 
 import settings
 
 DIR_CONTENT_TYPE = 'application/directory'
+
+logger = logging.getLogger(__name__)
 
 
 class ObjectStore:
@@ -19,9 +23,6 @@ class ObjectStore:
     def get_existing_batch_names(self):
         """
         Get list of existing batches in the object store.
-        :param connection: swiftclient connection
-        :return: Array of documents in the form:
-        [('rapportage', 'QE1_rapportage_Some_where - some extra info.pdf'), ... ]
         """
         connection = self.get_connection()
         documents_meta = objectstore.get_full_container_list(
@@ -33,3 +34,17 @@ class ObjectStore:
             if meta.get('content_type') != DIR_CONTENT_TYPE
         ]
         return batch_names
+
+    def upload(self, filepath, filename):
+        try:
+            file = open(filepath, "rb")
+            connection = self.get_connection()
+            logger.info(f"Uploading {filename}...")
+            connection.put_object(
+                container=settings.OBJECTSTORE_CONTAINER_NAME,
+                obj=filename,
+                contents=file,
+                content_type="text/csv"
+            )
+        except:
+            logger.exception(f"Failed to upload batch {filename}")
