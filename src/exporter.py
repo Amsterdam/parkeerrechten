@@ -1,3 +1,4 @@
+import datetime
 import logging
 from datetime import timedelta
 
@@ -20,6 +21,11 @@ class Exporter:
         self._run_export(batch_names)
 
     def export_range(self, start_date, end_date):
+        today = datetime.date.today()
+        if end_date >= today:
+            # ensure we never export today as its data is still incomplete
+            end_date = today - datetime.timedelta(days=1)
+
         batch_names = self.get_batch_names_for_export(start_date, end_date)
         self._run_export(batch_names)
 
@@ -38,4 +44,6 @@ class Exporter:
             (start_date + timedelta(days=days)).strftime("%Y%m%d")
             for days in range(num_days)
         ]
-        return batch_names
+
+        existing_batch_names = self.local_db.get_existing_batch_names()
+        return set(batch_names).intersection(set(existing_batch_names))

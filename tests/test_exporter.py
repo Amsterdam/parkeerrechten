@@ -21,8 +21,8 @@ class TestExporter:
     )
     def test_export_range(self, local_db, start_date_str, end_date_str, num_expected):
         exporter = Exporter()
-        start_date = datetime.strptime(start_date_str, "%Y%m%d")
-        end_date = datetime.strptime(end_date_str, "%Y%m%d")
+        start_date = datetime.strptime(start_date_str, "%Y%m%d").date()
+        end_date = datetime.strptime(end_date_str, "%Y%m%d").date()
         exporter.export_range(start_date, end_date)
 
         num_days = (end_date - start_date).days
