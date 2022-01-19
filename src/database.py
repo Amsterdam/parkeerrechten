@@ -152,6 +152,7 @@ class LocalDatabase(Database):
                 SELECT * 
                 FROM "{self.get_table_name()}" 
                 WHERE "VER_BATCH_NAAM"='{batch_name}'
+                ORDER BY "VERW_RECHT_ID"
             ) TO STDOUT WITH CSV HEADER;
         """
 

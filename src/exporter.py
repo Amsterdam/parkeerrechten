@@ -1,8 +1,13 @@
+import datetime
+import logging
 from datetime import timedelta
 
 import settings
 from database import LocalDatabase
 from object_store import ObjectStore
+
+
+logger = logging.getLogger(__name__)
 
 
 class Exporter:
@@ -16,13 +21,22 @@ class Exporter:
         self._run_export(batch_names)
 
     def export_range(self, start_date, end_date):
+        today = datetime.date.today()
+        if end_date >= today:
+            # ensure we never export today as its data is still incomplete
+            end_date = today - datetime.timedelta(days=1)
+
         batch_names = self.get_batch_names_for_export(start_date, end_date)
         self._run_export(batch_names)
 
     def _run_export(self, batch_names):
         for batch_name in batch_names:
             filename = f"{batch_name}{settings.BACKUP_FILE_POSTFIX}"
-            self.local_db.export_batch_to_csv(filename, batch_name)
+            try:
+                path = self.local_db.export_batch_to_csv(filename, batch_name)
+                self.object_store.upload(path, filename)
+            except:
+                logger.exception(f"Failed to export batch to csv {batch_name}")
 
     def get_batch_names_for_export(self, start_date, end_date):
         num_days = (end_date - start_date).days + 1
@@ -30,4 +44,6 @@ class Exporter:
             (start_date + timedelta(days=days)).strftime("%Y%m%d")
             for days in range(num_days)
         ]
-        return batch_names
+
+        existing_batch_names = self.local_db.get_existing_batch_names()
+        return set(batch_names).intersection(set(existing_batch_names))

@@ -37,14 +37,14 @@ class ObjectStore:
 
     def upload(self, filepath, filename):
         try:
-            file = open(filepath, "rb")
-            connection = self.get_connection()
-            logger.info(f"Uploading {filename}...")
-            connection.put_object(
-                container=settings.OBJECTSTORE_CONTAINER_NAME,
-                obj=filename,
-                contents=file,
-                content_type="text/csv"
-            )
+            with open(filepath, "rb") as file:
+                connection = self.get_connection()
+                logger.info(f"Uploading {filename}...")
+                connection.put_object(
+                    container=settings.OBJECTSTORE_CONTAINER_NAME,
+                    obj=filename,
+                    contents=file,
+                    content_type="text/csv"
+                )
         except:
             logger.exception(f"Failed to upload batch {filename}")
