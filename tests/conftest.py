@@ -52,6 +52,6 @@ def import_test_data(local_db):
     importer = Importer()
     start_date = date(year=2017, month=1, day=1)
     end_date = date(year=2018, month=1, day=1)
-    importer.import_range(start_date, end_date)
+    importer.import_range(start_date, end_date, override_existing=True)
     importer.import_orphans()
     assert local_db.get_num_rows() == 100

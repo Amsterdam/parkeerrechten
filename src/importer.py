@@ -29,14 +29,16 @@ class Importer:
         batch_names = [settings.NPR_NULL_VALUE]
         self._run_import(batch_names)
 
-    def import_range(self, start_date, end_date):
+    def import_range(self, start_date, end_date, override_existing=False):
         today = datetime.date.today()
         if end_date >= today:
             # ensure we never import today as its data is still incomplete
             end_date = today - datetime.timedelta(days=1)
 
         self.logger.info("Determining batch names for import...")
-        batch_names = self.get_batch_names_for_download(start_date, end_date)
+        batch_names = self.get_batch_names_for_download(
+            start_date, end_date, override_existing
+        )
         self.logger.info(f"{len(batch_names)} batches found to import")
         self._run_import(batch_names)
 
@@ -53,15 +55,18 @@ class Importer:
         for batch_name in batch_names:
             self.backup_batch(batch_name)
 
-    def get_batch_names_for_download(self, start_date, end_date):
+    def get_batch_names_for_download(self, start_date, end_date, override_existing):
         # We want batches that are requested and not yet backed up
         # (these are the set of candidates to back up).
 
-        batch_names_in_local_db = self.local_db.get_existing_batch_names(
-            require_table=False
-        )
-        batch_names_in_obj_store = self.object_store.get_existing_batch_names()
-        backed_up = batch_names_in_obj_store + batch_names_in_local_db
+        if override_existing:
+            backed_up = []
+        else:
+            batch_names_in_local_db = self.local_db.get_existing_batch_names(
+                require_table=False
+            )
+            batch_names_in_obj_store = self.object_store.get_existing_batch_names()
+            backed_up = batch_names_in_obj_store + batch_names_in_local_db
 
         batch_names = self.npr_db.get_existing_batch_names()
         batch_names = filter_batch_names(start_date, end_date, batch_names)
