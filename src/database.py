@@ -3,7 +3,7 @@ import os
 import sys
 import time
 
-from sqlalchemy import MetaData, Table, distinct, asc, literal, insert
+from sqlalchemy import MetaData, Table, asc, distinct, insert, literal
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.future import create_engine, select
 from sqlalchemy.orm import sessionmaker
@@ -126,7 +126,6 @@ class NPRDatabase(Database):
 
 
 class LocalDatabase(Database):
-
     def __init__(self):
         super().__init__()
 
@@ -142,7 +141,9 @@ class LocalDatabase(Database):
                 start = time.perf_counter()
                 session.execute(insert(NPRTable.__table__), rows)
                 end = time.perf_counter()
-                self.logger.info(f"> Inserting {len(rows)} rows took {end - start:.2f}s")
+                self.logger.info(
+                    f"> Inserting {len(rows)} rows took {end - start:.2f}s"
+                )
 
     def export_batch_to_csv(self, output_filename, batch_name):
         output_path = self.ensure_path(output_filename)

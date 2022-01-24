@@ -1,5 +1,4 @@
-
-from sqlalchemy import Column, Numeric, String, Unicode, SmallInteger, Integer
+from sqlalchemy import Column, Integer, Numeric, SmallInteger, String, Unicode
 from sqlalchemy.orm import declarative_base
 
 import settings

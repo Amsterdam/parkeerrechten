@@ -4,7 +4,6 @@ from object_store import ObjectStore
 
 
 class TestObjectStore:
-
     def test_init(self):
         objectstore = ObjectStore(config='foobar')
         assert objectstore.config == 'foobar'

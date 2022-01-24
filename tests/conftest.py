@@ -4,9 +4,9 @@ from datetime import date
 
 import pytest
 
-from database import NPRDatabase, LocalDatabase
+from database import LocalDatabase, NPRDatabase
 from importer import Importer
-from models import NPRTable, Base
+from models import Base, NPRTable
 
 TEST_CSV_FILENAME = os.path.join(os.path.dirname(__name__), 'test-data.csv')
 

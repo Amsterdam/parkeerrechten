@@ -4,7 +4,7 @@ import sys
 import time
 
 import settings
-from database import NPRDatabase, LocalDatabase
+from database import LocalDatabase, NPRDatabase
 from object_store import ObjectStore
 from util import filter_batch_names
 

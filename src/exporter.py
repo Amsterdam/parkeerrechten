@@ -6,7 +6,6 @@ import settings
 from database import LocalDatabase
 from object_store import ObjectStore
 
-
 logger = logging.getLogger(__name__)
 
 

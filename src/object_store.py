@@ -44,7 +44,7 @@ class ObjectStore:
                     container=settings.OBJECTSTORE_CONTAINER_NAME,
                     obj=filename,
                     contents=file,
-                    content_type="text/csv"
+                    content_type="text/csv",
                 )
         except:
             logger.exception(f"Failed to upload batch {filename}")
