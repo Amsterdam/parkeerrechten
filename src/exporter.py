@@ -1,5 +1,6 @@
 import datetime
 import logging
+import sys
 from datetime import timedelta
 
 import settings
@@ -7,6 +8,12 @@ from database import LocalDatabase
 from object_store import ObjectStore
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.WARNING,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 
 
 class Exporter:
@@ -26,6 +33,7 @@ class Exporter:
             end_date = today - datetime.timedelta(days=1)
 
         batch_names = self.get_batch_names_for_export(start_date, end_date)
+        logger.info(f"Found {len(batch_names)} batch names for export")
         self._run_export(batch_names)
 
     def _run_export(self, batch_names):
@@ -34,6 +42,7 @@ class Exporter:
             try:
                 path = self.local_db.export_batch_to_csv(filename, batch_name)
                 self.object_store.upload(path, filename)
+                logger.info(f"Exported batch {batch_name}")
             except:
                 logger.exception(f"Failed to export batch to csv {batch_name}")
 
@@ -45,4 +54,5 @@ class Exporter:
         ]
 
         existing_batch_names = self.local_db.get_existing_batch_names()
-        return set(batch_names).intersection(set(existing_batch_names))
+        new_batches = set(batch_names).intersection(set(existing_batch_names))
+        return sorted(list(new_batches))

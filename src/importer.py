@@ -9,16 +9,16 @@ from object_store import ObjectStore
 from util import filter_batch_names
 
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.WARNING,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+
+
 class Importer:
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-
-    logging.basicConfig(
-        stream=sys.stdout,
-        level=logging.WARNING,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    )
-
     def __init__(self):
         super().__init__()
         self.local_db = LocalDatabase()
@@ -35,11 +35,11 @@ class Importer:
             # ensure we never import today as its data is still incomplete
             end_date = today - datetime.timedelta(days=1)
 
-        self.logger.info("Determining batch names for import...")
+        logger.info("Determining batch names for import...")
         batch_names = self.get_batch_names_for_download(
             start_date, end_date, override_existing
         )
-        self.logger.info(f"{len(batch_names)} batches found to import")
+        logger.info(f"{len(batch_names)} batches found to import")
         self._run_import(batch_names)
 
     def import_last_x_days(self, num_days):
@@ -49,7 +49,7 @@ class Importer:
 
     def _run_import(self, batch_names):
         if not batch_names:
-            self.logger.info("Nothing to import")
+            logger.info("Nothing to import")
             return
 
         for batch_name in batch_names:
@@ -79,13 +79,13 @@ class Importer:
         """
         Retrieve records from NPR, store them in local database in batches.
         """
-        self.logger.info(f"Backing up batch {batch_name}. Getting iterator...")
+        logger.info(f"Backing up batch {batch_name}. Getting iterator...")
         npr_backup_iterator = self.npr_db.get_backup_iterator(
             batch_name, batch_size=settings.BATCH_SIZE
         )
 
-        self.logger.info("Starting local import")
+        logger.info("Starting local import")
         start = time.perf_counter()
         self.local_db.backup_iterator(npr_backup_iterator)
         end = time.perf_counter()
-        self.logger.info(f">> Done. Processing iterator took {end - start:0.2f}s")
+        logger.info(f">> Done. Processing iterator took {end - start:0.2f}s")
