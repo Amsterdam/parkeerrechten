@@ -44,8 +44,8 @@ push_semver:
 	VERSION=$${VERSION%\.*} $(MAKE) push
 	VERSION=$${VERSION%%\.*} $(MAKE) push
 
-app:                                ## Run app
-	$(run) --service-ports app
+import:                             ## Import the last x days of data
+	$(run) app python run_import.py
 
 bash:                               ## Run the container and start bash
 	$(run) dev bash
@@ -69,3 +69,4 @@ clean:                              ## Clean docker stuff
 
 env:                                ## Print current env
 	env | sort
+
