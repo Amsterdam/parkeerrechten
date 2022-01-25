@@ -33,6 +33,7 @@ class Exporter:
             end_date = today - datetime.timedelta(days=1)
 
         batch_names = self.get_batch_names_for_export(start_date, end_date)
+
         logger.info(f"Found {len(batch_names)} batch names for export")
         self._run_export(batch_names)
 
@@ -54,5 +55,5 @@ class Exporter:
         ]
 
         existing_batch_names = self.local_db.get_existing_batch_names()
-        new_batches = set(batch_names).intersection(set(existing_batch_names))
-        return sorted(list(new_batches))
+        batches = set(batch_names).intersection(set(existing_batch_names))
+        return sorted(list(batches))
