@@ -7,7 +7,7 @@ x-app: &base-app
   depends_on:
     - database
     - npr_database
-  environment:
+  environment: &base-app-environment
     NPR_DB_USER: sa
     NPR_DB_PASSWORD: "DevDev123!"
     NPR_DB_HOST: npr_database
@@ -57,3 +57,6 @@ services:
     build:
       context: .
       target: tests
+    environment:
+      <<: *base-app-environment
+      TMP_DATA_DIR: /tmp
