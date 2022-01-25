@@ -8,7 +8,6 @@ from database import LocalDatabase, NPRDatabase
 from object_store import ObjectStore
 from util import filter_batch_names
 
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logging.basicConfig(

@@ -48,7 +48,7 @@ pipeline {
                 }
             }
             stages {
-                stage('Push') {
+                stage('Push semver') {
                     steps {
                         slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
                             [
@@ -62,7 +62,7 @@ pipeline {
                     }
                 }
 
-                stage('Deploy to acceptance') {
+                stage('Push acceptance') {
                     when { 
                         anyOf {
                             environment name: 'IS_RELEASE', value: 'true' 
@@ -70,42 +70,30 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'VERSION=acceptance make push'
-                        build job: 'Subtask_Openstack_Playbook', parameters: [
-                            string(name: 'PLAYBOOK', value: PLAYBOOK),
-                            string(name: 'INVENTORY', value: "acceptance"),
-                            string(
-                                name: 'PLAYBOOKPARAMS', 
-                                value: "-e cmdb_id=app_${PROJECT_NAME}"
-                            )
-                        ], wait: true
+                        retry(3) {
+                            sh 'VERSION=acceptance make push'
+                        }
 
                         slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
                             [
                                 "color": "#36a64f",
-                                "title": "Deploy to acceptance succeeded :rocket:",
+                                "title": "Push acceptance image succeeded :rocket:",
                             ]
                         ])
                     }
                 }
 
-                stage('Deploy to production') {
+                stage('Push production') {
                     when { tag pattern: "v\\d+\\.\\d+\\.\\d+\\.*", comparator: "REGEXP" }
                     steps {
-                        sh 'VERSION=production make push'
-                        build job: 'Subtask_Openstack_Playbook', parameters: [
-                            string(name: 'PLAYBOOK', value: PLAYBOOK),
-                            string(name: 'INVENTORY', value: "production"),
-                            string(
-                                name: 'PLAYBOOKPARAMS', 
-                                value: "-e cmdb_id=app_${PROJECT_NAME}"
-                            )
-                        ], wait: true
+                        retry(3) {
+                            sh 'VERSION=production make push'
+                        }
 
-                        slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
+                        slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE <<
                             [
                                 "color": "#36a64f",
-                                "title": "Deploy to production succeeded :rocket:",
+                                "title": "Push production image succeeded :rocket:",
                             ]
                         ])
                     }

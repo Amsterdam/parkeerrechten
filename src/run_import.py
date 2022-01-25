@@ -7,7 +7,7 @@ from importer import Importer
 if __name__ == "__main__":
     """
     Import the last 7 days of data from the RDW database
-    and export the data in CSV files to the objectstore. 
+    and export the data in CSV files to the objectstore.
     """
     end_date = datetime.now().date()
     start_date = end_date - timedelta(days=settings.NUM_DAYS_TO_IMPORT)
@@ -17,4 +17,3 @@ if __name__ == "__main__":
 
     exporter = Exporter()
     exporter.export_range(start_date, end_date)
-
