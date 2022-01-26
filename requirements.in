@@ -5,3 +5,4 @@ sqlalchemy
 psycopg2
 pymssql
 datapunt-objectstore
+sentry-sdk
