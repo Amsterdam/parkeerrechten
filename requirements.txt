@@ -7,14 +7,16 @@
 attrs==21.4.0
     # via jsonschema
 certifi==2021.10.8
-    # via requests
+    # via
+    #   requests
+    #   sentry-sdk
 charset-normalizer==2.0.10
     # via requests
 datapunt-config-loader==1.1.2
     # via datapunt-objectstore
 datapunt-objectstore==2020.9.7
     # via -r requirements.in
-debtcollector==2.3.0
+debtcollector==2.4.0
     # via
     #   oslo.config
     #   oslo.utils
@@ -50,7 +52,7 @@ oslo.i18n==5.1.0
     #   python-keystoneclient
 oslo.serialization==4.2.0
     # via python-keystoneclient
-oslo.utils==4.12.0
+oslo.utils==4.12.1
     # via
     #   oslo.serialization
     #   python-keystoneclient
@@ -68,13 +70,13 @@ pbr==5.8.0
     #   stevedore
 psycopg2==2.9.3
     # via -r requirements.in
-pymssql==2.2.3
+pymssql==2.2.4
     # via -r requirements.in
-pyparsing==3.0.6
+pyparsing==3.0.7
     # via
     #   oslo.utils
     #   packaging
-pyrsistent==0.18.0
+pyrsistent==0.18.1
     # via jsonschema
 python-dateutil==2.8.2
     # via datapunt-objectstore
@@ -98,14 +100,15 @@ requests==2.27.1
     #   python-swiftclient
 rfc3986==2.0.0
     # via oslo.config
+sentry-sdk==1.5.4
+    # via -r requirements.in
 six==1.16.0
     # via
-    #   debtcollector
     #   keystoneauth1
     #   python-dateutil
     #   python-keystoneclient
     #   python-swiftclient
-sqlalchemy==1.4.29
+sqlalchemy==1.4.31
     # via -r requirements.in
 stevedore==3.5.0
     # via
@@ -113,6 +116,8 @@ stevedore==3.5.0
     #   oslo.config
     #   python-keystoneclient
 urllib3==1.26.8
-    # via requests
+    # via
+    #   requests
+    #   sentry-sdk
 wrapt==1.13.3
     # via debtcollector
