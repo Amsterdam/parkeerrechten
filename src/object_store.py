@@ -1,4 +1,5 @@
 import logging
+import os
 
 from objectstore import objectstore
 
@@ -20,20 +21,32 @@ class ObjectStore:
             self.connection = objectstore.get_connection(self.config)
         return self.connection
 
-    def get_existing_batch_names(self):
+    def get_existing_batch_names(self, include_processed=True):
         """
         Get list of existing batches in the object store.
         """
+        folders = [settings.OBJECTSTORE_CONTAINER_NAME]
+        if include_processed and settings.OBJECTSTORE_PROCESSED_FOLDER_NAME:
+            folders.append(
+                os.path.join(
+                    settings.OBJECTSTORE_CONTAINER_NAME,
+                    settings.OBJECTSTORE_PROCESSED_FOLDER_NAME,
+                )
+            )
+
         connection = self.get_connection()
-        documents_meta = objectstore.get_full_container_list(
-            connection, settings.OBJECTSTORE_CONTAINER_NAME
-        )
-        batch_names = [
-            meta.get('name').replace(settings.BACKUP_FILE_POSTFIX, "")
-            for meta in documents_meta
-            if meta.get('content_type') != DIR_CONTENT_TYPE
-        ]
-        return batch_names
+        batch_names = []
+
+        for folder in folders:
+            documents_meta = objectstore.get_full_container_list(connection, folder)
+            for meta in documents_meta:
+                if meta.get('content_type') != DIR_CONTENT_TYPE:
+                    batch_names.append(
+                        meta['name'].replace(settings.BACKUP_FILE_POSTFIX, "")
+                    )
+
+        # return sorted, unique list of existing batch names
+        return sorted(list(set(batch_names)))
 
     def upload(self, filepath, filename):
         try:
