@@ -1,5 +1,6 @@
 import os
 
+import sentry_sdk
 from sqlalchemy.engine import URL
 
 NPR_DB_URL = URL(
@@ -42,3 +43,7 @@ OBJECTSTORE_CONNECTION_CONFIG = dict(
 OBJECTSTORE_CONTAINER_NAME = os.getenv("OBJECTSTORE_CONTAINER_NAME")
 
 BACKUP_FILE_POSTFIX = "_NPR_BACKUP.csv"
+
+SENTRY_DSN = os.getenv('SENTRY_DSN')
+if SENTRY_DSN:
+    sentry_sdk.init(dsn=SENTRY_DSN)
