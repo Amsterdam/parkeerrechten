@@ -44,6 +44,7 @@ services:
 
   app:
     <<: *base-app
+    image: docker-registry.data.amsterdam.nl/datapunt/parkeerrechten:${VERSION:-latest}
     build:
       context: .
       target: app
