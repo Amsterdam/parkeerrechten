@@ -7,7 +7,7 @@ set -x
 DIR="$(dirname $0)"
 
 dc() {
-	docker-compose -p parkeerrechten -f ${DIR}/docker-compose.yml $*
+	docker-compose -u ${UID}:${GID} -p parkeerrechten -f ${DIR}/docker-compose.yml $*
 }
 
 trap 'dc kill ; dc down ; dc rm -f' EXIT
