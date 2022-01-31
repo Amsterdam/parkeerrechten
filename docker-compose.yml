@@ -17,9 +17,9 @@ x-app: &base-app
   volumes:
     - ./src:/app/src
     - ./tests:/app/tests
-    - ./deploy:/app/deploy
+    - ./jenkins-import:/app/jenkins-import
     - ./data:/data
-  entrypoint: /app/deploy/docker-entrypoint.sh
+  entrypoint: /app/jenkins-import/docker-entrypoint.sh
 
 services:
   database:
