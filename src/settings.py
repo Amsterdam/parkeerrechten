@@ -25,7 +25,7 @@ LOCAL_DB_URL = URL(
     database=os.getenv('LOCAL_DB_NAME', 'dev'),
 )
 
-BATCH_SIZE = os.getenv('BATCH_SIZE', 50000)
+BATCH_SIZE = int(os.getenv('BATCH_SIZE', 50000))
 
 NUM_DAYS_TO_IMPORT = int(os.getenv('NUM_DAYS_TO_IMPORT', 14))
 
