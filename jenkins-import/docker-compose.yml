@@ -33,13 +33,13 @@ services:
       LOCAL_DB_USER: "parkeerrechten"
       LOCAL_DB_PASSWORD: "insecure"
       LOCAL_DB_TABLE_NAME: "npr_import"
-      TMP_DATA_DIR: "/data"
+      TMP_DATA_DIR: "/tmp/data"
       NUM_DAYS_TO_IMPORT: 14
       BATCH_SIZE: 50000
     volumes:
-      - ./data:/data
+      - ./data:/tmp/data
     command: >
       bash -c "set -x && \
                set -e && \
-               /app/jenkins-import/docker-entrypoint.sh python run_import.py && \
-               chmod a+w /data"
+               chmod a+w /tmp/data && \
+               /app/jenkins-import/docker-entrypoint.sh python run_import.py" 
