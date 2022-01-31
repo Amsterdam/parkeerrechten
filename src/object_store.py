@@ -41,7 +41,9 @@ class ObjectStore:
             for meta in documents_meta:
                 if meta.get('content_type') != DIR_CONTENT_TYPE:
                     batch_names.append(
-                        meta['name'].replace(settings.BACKUP_FILE_POSTFIX, "")
+                        os.path.basename(
+                            meta['name'].replace(settings.BACKUP_FILE_POSTFIX, "")
+                        )
                     )
 
         # return sorted, unique list of existing batch names
