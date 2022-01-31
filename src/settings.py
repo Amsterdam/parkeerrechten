@@ -27,7 +27,7 @@ LOCAL_DB_URL = URL(
 
 BATCH_SIZE = os.getenv('BATCH_SIZE', 50000)
 
-NUM_DAYS_TO_IMPORT = os.getenv('NUM_DAYS_TO_IMPORT', 14)
+NUM_DAYS_TO_IMPORT = int(os.getenv('NUM_DAYS_TO_IMPORT', 14))
 
 TMP_DATA_DIR = os.getenv('TMP_DATA_DIR', '/data')
 
