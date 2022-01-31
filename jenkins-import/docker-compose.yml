@@ -43,5 +43,5 @@ services:
                set -e && \
                echo database:5432:parkeerrechten:parkeerrechten:insecure > ~/.pgpass && \
                chmod 600 ~/.pgpass && \
-               /app/.jenkins-import/docker-entrypoint.sh 'python run_import.py' && \
+               /app/jenkins-import/docker-entrypoint.sh 'python run_import.py' && \
                chmod a+w /data"

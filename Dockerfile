@@ -9,7 +9,7 @@ WORKDIR /app/install
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-COPY .jenkins-import /app/.jenkins-import
+COPY jenkins-import /app/jenkins-import
 
 WORKDIR /app/src
 COPY src .
