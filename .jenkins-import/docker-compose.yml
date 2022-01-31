@@ -1,0 +1,47 @@
+version: "3.5"
+services:
+  database:
+    image: amsterdam/postgres11
+    environment:
+      POSTGRES_DB: parkeerrechten
+      POSTGRES_USER: parkeerrechten
+      POSTGRES_PASSWORD: insecure
+
+  importer:
+    image: docker-registry.data.amsterdam.nl/datapunt/parkeerrechten:${ENVIRONMENT}
+    links:
+      - database
+    environment:
+      # Secrets passed from env
+      SENTRY_DSN:
+      NPR_DB_HOST:
+      NPR_DB_PORT:
+      NPR_DB_NAME:
+      NPR_DB_USER:
+      NPR_DB_PASSWORD:
+      NPR_DB_TABLE_NAME:
+      OBJECTSTORE_TENANT_NAME:
+      OBJECTSTORE_TENANT_ID:
+      OBJECTSTORE_USER:
+      OBJECTSTORE_PASSWORD:
+      OBJECTSTORE_CONTAINER_NAME:
+
+      SENTRY_ENVIRONMENT: ${ENVIRONMENT}
+      LOCAL_DB_HOST: "database"
+      LOCAL_DB_PORT: "5432"
+      LOCAL_DB_NAME: "parkeerrechten"
+      LOCAL_DB_USER: "parkeerrechten"
+      LOCAL_DB_PASSWORD: "insecure"
+      LOCAL_DB_TABLE_NAME: "npr_import"
+      TMP_DATA_DIR: "/data"
+      NUM_DAYS_TO_IMPORT: 14
+      BATCH_SIZE: 50000
+    volumes:
+      - ./data:/data
+    command: >
+      bash -c "set -x && \
+               set -e && \
+               echo database:5432:parkeerrechten:parkeerrechten:insecure > ~/.pgpass && \
+               chmod 600 ~/.pgpass && \
+               /app/.jenkins-import/docker-entrypoint.sh 'python run_import.py' && \
+               chmod a+w /data"
