@@ -41,5 +41,4 @@ services:
     command: >
       bash -c "set -x && \
                set -e && \
-               chmod a+w /tmp/data && \
                /app/jenkins-import/docker-entrypoint.sh python run_import.py" 
