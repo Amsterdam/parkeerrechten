@@ -25,20 +25,19 @@ class ObjectStore:
         """
         Get list of existing batches in the object store.
         """
-        folders = [settings.OBJECTSTORE_CONTAINER_NAME]
+        paths = [None]
         if include_processed and settings.OBJECTSTORE_PROCESSED_FOLDER_NAME:
-            folders.append(
-                os.path.join(
-                    settings.OBJECTSTORE_CONTAINER_NAME,
-                    settings.OBJECTSTORE_PROCESSED_FOLDER_NAME,
-                )
-            )
+            paths.append(settings.OBJECTSTORE_PROCESSED_FOLDER_NAME)
 
         connection = self.get_connection()
         batch_names = []
 
-        for folder in folders:
-            documents_meta = objectstore.get_full_container_list(connection, folder)
+        for path in paths:
+            documents_meta = objectstore.get_full_container_list(
+                conn=connection,
+                container=settings.OBJECTSTORE_CONTAINER_NAME,
+                path=path,
+            )
             for meta in documents_meta:
                 if meta.get('content_type') != DIR_CONTENT_TYPE:
                     batch_names.append(
