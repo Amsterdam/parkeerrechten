@@ -40,12 +40,9 @@ class Exporter:
     def _run_export(self, batch_names):
         for batch_name in batch_names:
             filename = f"{batch_name}{settings.BACKUP_FILE_POSTFIX}"
-            try:
-                path = self.local_db.export_batch_to_csv(filename, batch_name)
-                self.object_store.upload(path, filename)
-                logger.info(f"Exported batch {batch_name}")
-            except:
-                logger.exception(f"Failed to export batch to csv {batch_name}")
+            path = self.local_db.export_batch_to_csv(filename, batch_name)
+            self.object_store.upload(path, filename)
+            logger.info(f"Exported batch {batch_name}")
 
     def get_batch_names_for_export(self, start_date, end_date):
         num_days = (end_date - start_date).days + 1
