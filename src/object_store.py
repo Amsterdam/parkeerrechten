@@ -50,15 +50,12 @@ class ObjectStore:
         return sorted(list(set(batch_names)))
 
     def upload(self, filepath, filename):
-        try:
-            with open(filepath, "rb") as file:
-                connection = self.get_connection()
-                logger.info(f"Uploading {filename}...")
-                connection.put_object(
-                    container=settings.OBJECTSTORE_CONTAINER_NAME,
-                    obj=filename,
-                    contents=file,
-                    content_type="text/csv",
-                )
-        except:
-            logger.exception(f"Failed to upload batch {filename}")
+        with open(filepath, "rb") as file:
+            connection = self.get_connection()
+            logger.info(f"Uploading {filename}...")
+            connection.put_object(
+                container=settings.OBJECTSTORE_CONTAINER_NAME,
+                obj=filename,
+                contents=file,
+                content_type="text/csv",
+            )
