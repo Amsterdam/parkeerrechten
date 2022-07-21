@@ -3,6 +3,8 @@ import os
 import sentry_sdk
 from sqlalchemy.engine import URL
 
+from util import str_to_bool
+
 NPR_DB_URL = URL(
     drivername=os.getenv('NPR_DB_DRIVER', 'mssql+pymssql'),
     username=os.environ['NPR_DB_USER'],
@@ -28,6 +30,7 @@ LOCAL_DB_URL = URL(
 BATCH_SIZE = int(os.getenv('BATCH_SIZE', 50000))
 
 NUM_DAYS_TO_IMPORT = int(os.getenv('NUM_DAYS_TO_IMPORT', 14))
+OVERRIDE_EXISTING = str_to_bool(os.getenv('OVERRIDE_EXISTING', 'false'))
 
 TMP_DATA_DIR = os.getenv('TMP_DATA_DIR', '/data')
 
