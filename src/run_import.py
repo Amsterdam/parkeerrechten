@@ -14,10 +14,8 @@ if __name__ == "__main__":
 
     importer = Importer()
     importer.import_range(
-        start_date,
-        end_date,
-        override_existing=settings.OVERRIDE_EXISTING
-        )
+        start_date, end_date, override_existing=settings.OVERRIDE_EXISTING
+    )
 
     exporter = Exporter()
     exporter.export_range(start_date, end_date)

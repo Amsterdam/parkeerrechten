@@ -38,6 +38,7 @@ def validate_batch_names(batch_names, include_empty):
     """Filter list of potential batch names, accept only valid ones"""
     return [bn for bn in batch_names if is_batch_name(bn, include_empty)]
 
+
 def str_to_bool(boolstr):
     if not isinstance(boolstr, str):
         return False
