@@ -13,7 +13,9 @@ if __name__ == "__main__":
     start_date = end_date - timedelta(days=settings.NUM_DAYS_TO_IMPORT)
 
     importer = Importer()
-    importer.import_range(start_date, end_date)
+    importer.import_range(
+        start_date, end_date, override_existing=settings.OVERRIDE_EXISTING
+    )
 
     exporter = Exporter()
     exporter.export_range(start_date, end_date)
