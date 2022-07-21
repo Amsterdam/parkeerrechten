@@ -58,20 +58,27 @@ class Importer:
         # We want batches that are requested and not yet backed up
         # (these are the set of candidates to back up).
 
+        logger.info(f"override_existing is set to {override_existing}")
         if override_existing:
             backed_up = []
         else:
             batch_names_in_local_db = self.local_db.get_existing_batch_names(
                 require_table=False
             )
+            logger.info(f"batch_names_in_local_db: {batch_names_in_local_db}")
             batch_names_in_obj_store = self.object_store.get_existing_batch_names()
+            logger.info(f"batch_names_in_obj_store: {batch_names_in_obj_store}")
             backed_up = batch_names_in_obj_store + batch_names_in_local_db
+            logger.info(f"backed_up: {backed_up}")
 
         batch_names = self.npr_db.get_existing_batch_names()
+        logger.info(f"batch_names: {batch_names}")
         batch_names = filter_batch_names(start_date, end_date, batch_names)
+        logger.info(f"filtered batch_names: {batch_names}")
 
         batch_names = list(set(batch_names) - set(backed_up))
         batch_names.sort()
+        logger.info(f"final batch_names: {batch_names}")
         return batch_names
 
     def backup_batch(self, batch_name):
